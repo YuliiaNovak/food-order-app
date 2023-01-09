@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 import MealItem from "./MealItem/MealItem";
 import Card from "../UI/Card";
+import Loader from "../UI/Loader";
 import classes from "./AvailableMeals.module.css";
 
 const AvailableMeals = () => {
    const [meals, setMeals] = useState([]);
    const [error, setError] = useState();
+   const [isLoading, setIsLoading] = useState(false);
 
    const fetchMealsHandler = async () => {
+      setIsLoading(true);
       try {
          const response = await fetch(
             "https://food-order-1cdae-default-rtdb.firebaseio.com/meals.json"
          );
          const data = await response.json();
+         setIsLoading(false);
+
          const loadedMeals = [];
          for (const key in data) {
             loadedMeals.push({
@@ -30,7 +35,7 @@ const AvailableMeals = () => {
 
    useEffect(() => {
       fetchMealsHandler();
-   }, [meals]);
+   }, []);
 
    const mealsList = meals.map((meal) => (
       <MealItem
@@ -42,18 +47,20 @@ const AvailableMeals = () => {
       />
    ));
 
+   const errorMsg = <p>AN ERROR OCCURED!</p>;
+
    return (
-      <>
-         <section className={classes.meals}>
-            {error ? (
-               <p>AN ERROR OCCURED!</p>
-            ) : (
-               <Card>
-                  <ul>{mealsList}</ul>
-               </Card>
-            )}
-         </section>
-      </>
+      <section className={classes.meals}>
+         {error ? (
+            errorMsg
+         ) : isLoading ? (
+            <Loader />
+         ) : (
+            <Card>
+               <ul>{mealsList}</ul>
+            </Card>
+         )}
+      </section>
    );
 };
 
