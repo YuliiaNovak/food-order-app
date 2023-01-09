@@ -2,20 +2,17 @@ import { useEffect, useState } from "react";
 import MealItem from "./MealItem/MealItem";
 import Card from "../UI/Card";
 import Loader from "../UI/Loader";
+import { getMeals } from "../../utils/api";
 import classes from "./AvailableMeals.module.css";
 
 const AvailableMeals = () => {
    const [meals, setMeals] = useState([]);
    const [error, setError] = useState();
-   const [isLoading, setIsLoading] = useState(false);
+   const [isLoading, setIsLoading] = useState(true);
 
    const fetchMealsHandler = async () => {
-      setIsLoading(true);
       try {
-         const response = await fetch(
-            "https://food-order-1cdae-default-rtdb.firebaseio.com/meals.json"
-         );
-         const data = await response.json();
+         const data = await getMeals();
          setIsLoading(false);
 
          const loadedMeals = [];
