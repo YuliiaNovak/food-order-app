@@ -1,6 +1,6 @@
 # food-order-app
 
-I used Redux, React, CSS modules and Firebase to create this application
+I used React, CSS modules and Firebase to create this application
 
 In the Bookshop app you can: 
 
